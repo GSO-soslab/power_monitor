@@ -1,10 +1,12 @@
-#ifndef MICROCHIP_VOLTAGE_VOLTAGE_DRIVER_
-#define MICROCHIP_VOLTAGE_VOLTAGE_DRIVER_
+#ifndef POWER_MONITOR_VOLTAGE_DRIVER_
+#define POWER_MONITOR_VOLTAGE_DRIVER_
 
 #include <memory>
+#include <string>
 #include <ros/ros.h>
 #include <mvp_msgs/Power.h>
-#include <microchip_voltage/MCP3424.h>
+#include <power_monitor/MCP3424.h>
+#include <power_monitor/default.h>
 
 class VoltageDriver
 {
@@ -15,6 +17,8 @@ public:
     ~VoltageDriver() {}
 
     void Refresh();
+
+    int GetRate();
 
 private:
 
@@ -27,6 +31,16 @@ private:
     ros::Publisher voltage_pub_;
  
     std::shared_ptr<MCP3424> adc_;
+
+    MCP3424Config adc_param_;
+
+    int rate_;
+
+    int multiplier_;
+
+    std::string voltage_topic_;
+
+    std::string frame_id_;
 };
 
-#endif // MICROCHIP_VOLTAGE_VOLTAGE_DRIVER_
+#endif // POWER_MONITOR_VOLTAGE_DRIVER_

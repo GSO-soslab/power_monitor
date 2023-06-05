@@ -1,0 +1,24 @@
+
+sensor:
+    # brief: device address
+    address: "0x69"
+    #
+    gain: 1
+    # 
+    bitrate: 18
+    # 
+    mode: 1
+    #
+    channel: 1
+
+ros:
+    # 
+    voltage_topic: alpha/voltage
+    # 
+    frame_id: alpha/voltage
+
+system:
+    #
+    rate: 1
+    # 
+    multiplier: 11

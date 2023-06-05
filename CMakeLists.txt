@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(microchip_voltage)
+project(power_monitor)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++17)
@@ -16,9 +16,9 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 catkin_package(
-#  INCLUDE_DIRS include
+ INCLUDE_DIRS include
 #  LIBRARIES pos_nav
-#  CATKIN_DEPENDS roscpp rospy std_msgs sensor_msgs
+ CATKIN_DEPENDS roscpp rospy std_msgs sensor_msgs mvp_msgs
 #  DEPENDS system_lib
 )
 
@@ -29,6 +29,21 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
+
   ${catkin_INCLUDE_DIRS}
+)
+
+add_executable(${PROJECT_NAME}_node
+    # lib
+    include/power_monitor/MCP3424.cpp
+    include/power_monitor/voltage_driver.cpp
+    # source
+    src/ros_node.cpp
+)
+
+add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(${PROJECT_NAME}_node
+  ${catkin_LIBRARIES}
 )
