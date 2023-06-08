@@ -11,12 +11,6 @@ sensor:
     #
     channel: 1
 
-ros:
-    # 
-    voltage_topic: alpha/voltage
-    # 
-    frame_id: alpha/voltage
-
 system:
     #
     rate: 1

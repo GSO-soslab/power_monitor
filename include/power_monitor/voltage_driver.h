@@ -38,8 +38,6 @@ private:
 
     int multiplier_;
 
-    std::string voltage_topic_;
-
     std::string frame_id_;
 };
 

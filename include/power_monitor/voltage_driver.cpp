@@ -11,7 +11,7 @@ VoltageDriver::VoltageDriver(const ros::NodeHandle &nh,
     adc_ = std::make_shared<MCP3424>(&adc_param_);
 
     // setup ros
-    voltage_pub_ = nh_.advertise<mvp_msgs::Power>(voltage_topic_,10);
+    voltage_pub_ = nh_.advertise<mvp_msgs::Power>("power_monitor/voltage",10);
 }
 
 void VoltageDriver::LoadParam() {
@@ -35,8 +35,7 @@ void VoltageDriver::LoadParam() {
     nh_private_.param<int> ("system/multiplier", multiplier_, DEFAULT_ADC_RATE);
 
     // ros configuration
-    nh_private_.param<std::string> ("ros/voltage_topic", voltage_topic_, DEFAULT_ROS_VOLTAGE_TOPIC);
-    nh_private_.param<std::string> ("ros/frame_id", frame_id_, DEFAULT_ROS_FRAME_ID);
+    nh_private_.param<std::string> ("frame_id", frame_id_, DEFAULT_ROS_FRAME_ID);
 }
 
 int VoltageDriver::GetRate() {
