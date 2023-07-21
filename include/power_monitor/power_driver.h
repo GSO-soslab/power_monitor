@@ -42,7 +42,9 @@ private:
 
     int rate_;
 
-    int voltage_multiplier_;
+    double voltage_ratio_;
+
+    double current_ratio_;
 
     double current_offset_;
 

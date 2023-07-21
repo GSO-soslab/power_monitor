@@ -48,7 +48,8 @@ void VoltageDriver::LoadParam() {
 
     // system configuration
     nh_private_.param<int> ("system/rate", rate_, DEFAULT_ADC_RATE);
-    nh_private_.param<int> ("system/voltage_multiplier", voltage_multiplier_, DEFAULT_ADC_MULTIPLIER);
+    nh_private_.param<double> ("system/voltage_ratio", voltage_ratio_, DEFAULT_ADC_RATIO);
+    nh_private_.param<double> ("system/current_ratio", current_ratio_, DEFAULT_ADC_RATIO);
     nh_private_.param<double> ("system/current_offset", current_offset_, DEFAULT_ADC_OFFSET);
     nh_private_.param<double> ("system/current_scale", current_scale_, DEFAULT_ADC_SCALE);
 
@@ -61,8 +62,8 @@ int VoltageDriver::GetRate() {
 }
 
 void VoltageDriver::Refresh() {
-    auto voltage_data = voltage_->readVoltage() * voltage_multiplier_;
-    auto current_data = ( current_->readVoltage() * voltage_multiplier_ - current_offset_ ) / current_scale_;
+    auto voltage_data = voltage_->readVoltage() / voltage_ratio_;
+    auto current_data = ( current_->readVoltage() / current_ratio_ - current_offset_ ) / current_scale_;
 
     // printf("voltage: %f\n", voltage_data);
     // printf("current: %f\n", current_data);
