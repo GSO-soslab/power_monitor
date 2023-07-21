@@ -28,17 +28,25 @@ private:
 
     ros::NodeHandle nh_private_;
 
-    ros::Publisher voltage_pub_;
+    ros::Publisher power_pub_;
  
-    std::shared_ptr<MCP3424> adc_;
+    std::string frame_id_;
 
-    MCP3424Config adc_param_;
+    std::shared_ptr<MCP3424> voltage_;
+
+    std::shared_ptr<MCP3424> current_;
+
+    MCP3424Config voltage_param_;
+
+    MCP3424Config current_param_;
 
     int rate_;
 
-    int multiplier_;
+    int voltage_multiplier_;
 
-    std::string frame_id_;
+    double current_offset_;
+
+    double current_scale_;
 };
 
 #endif // POWER_MONITOR_VOLTAGE_DRIVER_

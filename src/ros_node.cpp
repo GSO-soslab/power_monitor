@@ -1,5 +1,5 @@
 #include <power_monitor/MCP3424.h>
-#include <power_monitor/voltage_driver.h>
+#include <power_monitor/power_driver.h>
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "Power_Monitor_Node"); 

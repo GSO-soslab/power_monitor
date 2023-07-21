@@ -1,5 +1,5 @@
 
-sensor:
+voltage:
     # brief: device address
     address: "0x69"
     #
@@ -11,8 +11,24 @@ sensor:
     #
     channel: 1
 
+current:
+    # brief: device address
+    address: "0x69"
+    #
+    gain: 1
+    # 
+    bitrate: 18
+    # 
+    mode: 1
+    #
+    channel: 2
+
 system:
     #
     rate: 1
     # 
-    multiplier: 11
+    voltage_multiplier: 11
+    #
+    current_offset: 2.5
+    #
+    current_scale: 0.066

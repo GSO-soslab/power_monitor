@@ -37,7 +37,7 @@ include_directories(
 add_executable(${PROJECT_NAME}_node
     # lib
     include/power_monitor/MCP3424.cpp
-    include/power_monitor/voltage_driver.cpp
+    include/power_monitor/power_driver.cpp
     # source
     src/ros_node.cpp
 )

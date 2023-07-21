@@ -11,9 +11,11 @@
 // system
 #define DEFAULT_ADC_RATE 1
 #define DEFAULT_ADC_MULTIPLIER 11
+#define DEFAULT_ADC_OFFSET 0.0
+#define DEFAULT_ADC_SCALE 1.0
 
 // ros
-#define DEFAULT_ROS_VOLTAGE_TOPIC "voltage"
+#define DEFAULT_ROS_TOPIC "power"
 #define DEFAULT_ROS_FRAME_ID "alpha"
 
 #endif // POWER_MONITOR_DEFAULT_
