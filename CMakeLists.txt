@@ -1,49 +1,53 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.8)
 project(power_monitor)
 
-## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++17)
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
+# find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(mvp_msgs REQUIRED)
+
+include_directories(
+  include
+)
+
+set(ros_dependencies
+  rclcpp
   std_msgs
-  sensor_msgs
   mvp_msgs
 )
 
-catkin_package(
- INCLUDE_DIRS include
-#  LIBRARIES pos_nav
- CATKIN_DEPENDS roscpp rospy std_msgs sensor_msgs mvp_msgs
-#  DEPENDS system_lib
+# build
+add_executable(power_monitor_node 
+  src/ros_node.cpp
+  include/power_monitor/power_monitor.cpp
+  include/power_monitor/MCP3424.cpp
+)
+# target_link_libraries(power_monitor_node 
+#   ${Boost_LIBRARIES} what kind of lib need link here ???
+# )
+ament_target_dependencies(power_monitor_node ${ros_dependencies})
+
+install(TARGETS power_monitor_node
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
-###########
-## Build ##
-###########
-
-## Specify additional locations of header files
-## Your package locations should be listed before other locations
-include_directories(
-  include
-
-  ${catkin_INCLUDE_DIRS}
+install(DIRECTORY include/
+  DESTINATION include/
 )
 
-add_executable(${PROJECT_NAME}_node
-    # lib
-    include/power_monitor/MCP3424.cpp
-    include/power_monitor/power_driver.cpp
-    # source
-    src/ros_node.cpp
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}
+)
+install(DIRECTORY
+  config
+  DESTINATION share/${PROJECT_NAME}
 )
 
-add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-target_link_libraries(${PROJECT_NAME}_node
-  ${catkin_LIBRARIES}
-)
+ament_package()

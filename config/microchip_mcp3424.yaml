@@ -1,36 +1,41 @@
+/alpha/power_monitor_node:
+    ros__parameters:
+        voltage:
+            # brief: device address
+            address: "0x69"
+            #
+            gain: 1
+            # 
+            bitrate: 18
+            # 
+            mode: 1
+            #
+            channel: 1
 
-voltage:
-    # brief: device address
-    address: "0x69"
-    #
-    gain: 1
-    # 
-    bitrate: 18
-    # 
-    mode: 1
-    #
-    channel: 1
+        current:
+            # brief: device address
+            address: "0x69"
+            #
+            gain: 1
+            # 
+            bitrate: 18
+            # 
+            mode: 1
+            #
+            channel: 2
 
-current:
-    # brief: device address
-    address: "0x69"
-    #
-    gain: 1
-    # 
-    bitrate: 18
-    # 
-    mode: 1
-    #
-    channel: 2
+        system:
+            #
+            rate: 2
+            # 
+            voltage_ratio: 0.090082
+            #
+            current_ratio: 0.092147
+            #
+            current_offset: 2.5
+            #
+            current_scale: 0.066
 
-system:
-    #
-    rate: 1
-    # 
-    voltage_ratio: 0.090082
-    #
-    current_ratio: 0.092147
-    #
-    current_offset: 2.5
-    #
-    current_scale: 0.066
+        ros:
+            #
+            frame_id: alpha

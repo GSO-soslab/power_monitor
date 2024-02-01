@@ -1,36 +1,37 @@
 #ifndef POWER_MONITOR_VOLTAGE_DRIVER_
 #define POWER_MONITOR_VOLTAGE_DRIVER_
 
-#include <memory>
+#include <chrono>
+#include <functional>
 #include <string>
-#include <ros/ros.h>
-#include <mvp_msgs/Power.h>
+
+#include <rclcpp/rclcpp.hpp>
+#include <mvp_msgs/msg/power.hpp>
+
 #include <power_monitor/MCP3424.h>
 #include <power_monitor/default.h>
 
-class VoltageDriver
+using namespace std::chrono_literals;
+
+class PowerMonitor : public rclcpp::Node
 {
 public:
-    VoltageDriver(const ros::NodeHandle &nh, 
-                  const ros::NodeHandle &nh_private);
+    PowerMonitor();
 
-    ~VoltageDriver() {}
-
-    void Refresh();
-
-    int GetRate();
+    void CallbackTimer();
 
 private:
-
     void LoadParam();
 
-    ros::NodeHandle nh_;
+    rclcpp::TimerBase::SharedPtr timer_;
 
-    ros::NodeHandle nh_private_;
+    rclcpp::Publisher<mvp_msgs::msg::Power>::SharedPtr publisher_;
 
-    ros::Publisher power_pub_;
- 
+    //! ROS parameters
+
     std::string frame_id_;
+
+    //! parameters
 
     std::shared_ptr<MCP3424> voltage_;
 
@@ -48,7 +49,8 @@ private:
 
     double current_offset_;
 
-    double current_scale_;
+    double current_scale_;    
+
 };
 
 #endif // POWER_MONITOR_VOLTAGE_DRIVER_
