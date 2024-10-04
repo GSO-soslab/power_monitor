@@ -4,7 +4,8 @@
 #include <memory>
 #include <string>
 #include <ros/ros.h>
-#include <mvp_msgs/Power.h>
+#include <std_msgs/Float32MultiArray.h>
+
 #include <power_monitor/MCP3424.h>
 #include <power_monitor/default.h>
 

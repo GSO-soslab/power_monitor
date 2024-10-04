@@ -12,7 +12,7 @@ VoltageDriver::VoltageDriver(const ros::NodeHandle &nh,
     current_ = std::make_shared<MCP3424>(&current_param_);
 
     // setup ros
-    power_pub_ = nh_.advertise<mvp_msgs::Power>("power_monitor/power",10);
+    power_pub_ = nh_.advertise<std_msgs::Float32MultiArray>("power_monitor/power",10);
 }
 
 void VoltageDriver::LoadParam() {
@@ -68,11 +68,25 @@ void VoltageDriver::Refresh() {
     // printf("voltage: %f\n", voltage_data);
     // printf("current: %f\n", current_data);
 
-    mvp_msgs::Power msg;
-    msg.header.stamp = ros::Time::now();
-    msg.header.frame_id = frame_id_;
-    msg.voltage = voltage_data;
-    msg.current = current_data;
+    std_msgs::Float32MultiArray msg;
 
+    // Set the dimensions
+    msg.layout.dim.push_back(std_msgs::MultiArrayDimension());
+
+    // Example: 1D array (1x2 matrix)
+    msg.layout.dim[0].label = "voltage_current";
+    msg.layout.dim[0].size = 2;
+    msg.layout.dim[0].stride = 2;  
+
+    msg.layout.data_offset = 0;  // Offset from the start
+
+    // Fill the array with data (1x2 matrix)
+    msg.data.clear();
+    msg.data.push_back(voltage_data);
+    msg.data.push_back(current_data);
+
+    // Publish the message
     power_pub_.publish(msg);
+    
+
 }
