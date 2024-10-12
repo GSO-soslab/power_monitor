@@ -8,7 +8,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(mvp_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
 
 include_directories(
   include
@@ -17,7 +17,6 @@ include_directories(
 set(ros_dependencies
   rclcpp
   std_msgs
-  mvp_msgs
 )
 
 # build

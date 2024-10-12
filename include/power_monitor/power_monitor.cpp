@@ -14,7 +14,8 @@ PowerMonitor::PowerMonitor() : Node("power_monitor_node")
         std::chrono::milliseconds(1000/rate_), 
         std::bind(&PowerMonitor::CallbackTimer, this));
 
-    publisher_ = this->create_publisher<mvp_msgs::msg::Power>("~/power_monitor", 10);        
+    // publisher_ = this->create_publisher<mvp_msgs::msg::Power>("~/power_monitor", 10);  
+    publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("~/power_monitor", 10);    
 }
 
 void PowerMonitor::CallbackTimer() 
@@ -29,11 +30,14 @@ void PowerMonitor::CallbackTimer()
 
 
     // publish
-    auto message = mvp_msgs::msg::Power();
-    message.header.stamp = rclcpp::Clock(RCL_ROS_TIME).now();
-    message.header.frame_id = frame_id_;
-    message.voltage = voltage_data;
-    message.current = current_data;
+    // auto message = mvp_msgs::msg::Power();
+    auto message = std_msgs::msg::Float64MultiArray();
+    // message.header.stamp = rclcpp::Clock(RCL_ROS_TIME).now();
+    // message.header.frame_id = frame_id_;
+    message.data[0] = voltage_data;
+    message.data[1] = current_data;
+    // message.voltage = voltage_data;
+    // message.current = current_data;
 
     publisher_->publish(message);
 }
@@ -108,8 +112,8 @@ void PowerMonitor::LoadParam()
     this->get_parameter("system.current_scale",  current_scale_); 
 
     // =================== params for ROS =================== //
-    this->declare_parameter("ros.frame_id", DEFAULT_ROS_FRAME_ID);
+    // this->declare_parameter("ros.frame_id", DEFAULT_ROS_FRAME_ID);
 
-    this->get_parameter("ros.frame_id", frame_id_);
+    // this->get_parameter("ros.frame_id", frame_id_);
 }
 
