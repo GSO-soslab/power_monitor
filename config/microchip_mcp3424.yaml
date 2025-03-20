@@ -9,7 +9,7 @@ voltage:
     # 
     mode: 1
     #
-    channel: 1
+    channel: 2
 
 current:
     # brief: device address
@@ -21,7 +21,7 @@ current:
     # 
     mode: 1
     #
-    channel: 2
+    channel: 1
 
 system:
     #

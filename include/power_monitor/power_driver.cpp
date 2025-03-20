@@ -9,10 +9,11 @@ VoltageDriver::VoltageDriver(const ros::NodeHandle &nh,
 
     // setup sensor
     voltage_ = std::make_shared<MCP3424>(&voltage_param_);
-    current_ = std::make_shared<MCP3424>(&current_param_);
+    // current_ = std::make_shared<MCP3424>(&current_param_);
 
     // setup ros
     power_pub_ = nh_.advertise<std_msgs::Float32MultiArray>("power_monitor/power",10);
+    timer_ = nh_.createTimer(ros::Duration(1.0/rate_), &VoltageDriver::CallbackTimer, this);
 }
 
 void VoltageDriver::LoadParam() {
@@ -61,9 +62,26 @@ int VoltageDriver::GetRate() {
     return rate_;
 }
 
+void VoltageDriver::CallbackTimer(const ros::TimerEvent& event) {
+    auto curr_time = ros::Time::now().toSec();
+
+    // auto t1 = std::chrono::high_resolution_clock::now(); 
+    Refresh();
+    // auto t2 = std::chrono::high_resolution_clock::now(); 
+    // printf("[Refresh Time Cost]: %.6fs\n", 
+    //     std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() * 1e-6);    
+}
+
 void VoltageDriver::Refresh() {
+    // auto t1 = std::chrono::high_resolution_clock::now(); 
     auto voltage_data = voltage_->readVoltage() / voltage_ratio_;
-    auto current_data = ( current_->readVoltage() / current_ratio_ - current_offset_ ) / current_scale_;
+    // auto t2 = std::chrono::high_resolution_clock::now(); 
+    auto current_data = 0.0;
+    // auto current_data = ( current_->readVoltage() / current_ratio_ - current_offset_ ) / current_scale_;
+    // auto t3 = std::chrono::high_resolution_clock::now(); 
+    // printf("[Inside Time Cost]: voltage=%.6fs, current=%.6fs\n", 
+    //     std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() * 1e-6,
+    //     std::chrono::duration_cast<std::chrono::microseconds>(t3 - t2).count() * 1e-6);
 
     // printf("voltage: %f\n", voltage_data);
     // printf("current: %f\n", current_data);
@@ -87,6 +105,4 @@ void VoltageDriver::Refresh() {
 
     // Publish the message
     power_pub_.publish(msg);
-    
-
 }

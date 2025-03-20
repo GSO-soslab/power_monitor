@@ -7,6 +7,7 @@
 #include <linux/i2c-dev.h>
 
 #include "MCP3424.h"
+#include <iostream>
 
 
 MCP3424::MCP3424() {
@@ -19,9 +20,20 @@ MCP3424::MCP3424(struct MCP3424Config *_cnf) {
     generateConfig();
     _fd = -1;
     _sign = 0;
+
+    openI2C();
+
+    _config |= 128;
+    //printf("actual config : 0x%X\n",_config);
+
+    // writeConfig();
+
 }
 MCP3424::~MCP3424() {
     /* Nothing */
+    // std::cout<<"MCP3424 closing!\n";
+    closeI2C();
+    // std::cout<<"MCP3424 closed!\n";
 }
 void MCP3424::openI2C() {
     _fd = open("/dev/i2c-1",O_RDWR);
@@ -64,16 +76,26 @@ uint32_t MCP3424::readRaw() {
     uint32_t raw = 0;
     _sign = 0;
 
-    openI2C();
+    // openI2C();
 
-    _config |= 128;
-    //printf("actual config : 0x%X\n",_config);
+    // _config |= 128;
+    // //printf("actual config : 0x%X\n",_config);
 
     writeConfig();
     
     for (uint16_t i = 0; (i < 1000) && (readConfig() & 128); i++);
+
+    // for(uint16_t i=0; i<1000; i++) {
+    //     auto readed = readConfig();
+    //     printf("readed: %d, i:%d\n", readed, i);
+    //     auto flag = (readed & 128);
+    //     if (!flag) {
+    //         // printf("readed: %d, i:%d\n", readed, i);
+    //         break;
+    //     }
+    // }
     
-    closeI2C();
+    // closeI2C();
 
     switch (_conf->bitrate) {
     case 18:

@@ -9,6 +9,8 @@
 #include <power_monitor/MCP3424.h>
 #include <power_monitor/default.h>
 
+#include <chrono>
+
 class VoltageDriver
 {
 public:
@@ -21,6 +23,8 @@ public:
 
     int GetRate();
 
+    void CallbackTimer(const ros::TimerEvent& event);
+    
 private:
 
     void LoadParam();
@@ -31,11 +35,13 @@ private:
 
     ros::Publisher power_pub_;
  
+    ros::Timer timer_;
+
     std::string frame_id_;
 
     std::shared_ptr<MCP3424> voltage_;
 
-    std::shared_ptr<MCP3424> current_;
+    // std::shared_ptr<MCP3424> current_;
 
     MCP3424Config voltage_param_;
 
