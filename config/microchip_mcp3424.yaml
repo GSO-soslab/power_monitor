@@ -28,6 +28,8 @@ system:
     rate: 1
     # 
     voltage_ratio: 0.090082
+    # 
+    voltage_warn: 21.0    
     #
     current_ratio: 0.092147
     #

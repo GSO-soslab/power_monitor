@@ -48,11 +48,12 @@ void VoltageDriver::LoadParam() {
     current_param_.channel = (uint8_t)current_channel;
 
     // system configuration
-    nh_private_.param<int> ("system/rate", rate_, DEFAULT_ADC_RATE);
-    nh_private_.param<double> ("system/voltage_ratio", voltage_ratio_, DEFAULT_ADC_RATIO);
-    nh_private_.param<double> ("system/current_ratio", current_ratio_, DEFAULT_ADC_RATIO);
-    nh_private_.param<double> ("system/current_offset", current_offset_, DEFAULT_ADC_OFFSET);
-    nh_private_.param<double> ("system/current_scale", current_scale_, DEFAULT_ADC_SCALE);
+    nh_private_.param<int> ("system/rate", rate_, DEFAULT_SYSTEM_RATE);
+    nh_private_.param<double> ("system/voltage_ratio", voltage_ratio_, DEFAULT_RATIO);
+    nh_private_.param<double> ("system/voltage_warn", voltage_warn_, DEFAULT_BATTERY_WARN);
+    nh_private_.param<double> ("system/current_ratio", current_ratio_, DEFAULT_RATIO);
+    nh_private_.param<double> ("system/current_offset", current_offset_, DEFAULT_OFFSET);
+    nh_private_.param<double> ("system/current_scale", current_scale_, DEFAULT_SCALE);
 
     // ros configuration
     nh_private_.param<std::string> ("frame_id", frame_id_, DEFAULT_ROS_FRAME_ID);
@@ -105,4 +106,9 @@ void VoltageDriver::Refresh() {
 
     // Publish the message
     power_pub_.publish(msg);
+
+    // send warning if it's low voltage
+    if (voltage_data <= voltage_warn_) {
+        ROS_WARN("%s: current voltage:%f is low", ros::this_node::getName().c_str(), voltage_data);
+    }
 }

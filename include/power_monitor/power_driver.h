@@ -51,11 +51,14 @@ private:
 
     double voltage_ratio_;
 
+    double voltage_warn_;
+
     double current_ratio_;
 
     double current_offset_;
 
     double current_scale_;
+
 };
 
 #endif // POWER_MONITOR_VOLTAGE_DRIVER_

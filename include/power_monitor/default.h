@@ -9,10 +9,11 @@
 #define DEFAULT_ADC_CHANNEL 1
 
 // system
-#define DEFAULT_ADC_RATE 1
-#define DEFAULT_ADC_RATIO 0.9
-#define DEFAULT_ADC_OFFSET 0.0
-#define DEFAULT_ADC_SCALE 1.0
+#define DEFAULT_SYSTEM_RATE 1
+#define DEFAULT_RATIO 0.9
+#define DEFAULT_OFFSET 0.0
+#define DEFAULT_SCALE 1.0
+#define DEFAULT_BATTERY_WARN 21.0
 
 // ros
 #define DEFAULT_ROS_TOPIC "power"
