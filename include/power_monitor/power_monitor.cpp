@@ -7,44 +7,30 @@ PowerMonitor::PowerMonitor() : Node("power_monitor_node")
 
     // setup sensor
     voltage_ = std::make_shared<MCP3424>(&voltage_param_);
-    current_ = std::make_shared<MCP3424>(&current_param_);
+    // current_ = std::make_shared<MCP3424>(&current_param_);
 
     // setup the ros
     timer_ = this->create_wall_timer( 
         std::chrono::milliseconds(1000/rate_), 
         std::bind(&PowerMonitor::CallbackTimer, this));
 
-    // publisher_ = this->create_publisher<mvp_msgs::msg::Power>("~/power_monitor", 10);  
     publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("~/power_monitor", 10);    
 }
 
 void PowerMonitor::CallbackTimer() 
 {
-    // RCLCPP_INFO(this->get_logger(), "Hello %d!", rate_);
-
     auto voltage_data = voltage_->readVoltage() / voltage_ratio_;
-    auto current_data = ( current_->readVoltage() / current_ratio_ - current_offset_ ) / current_scale_;
+    // auto current_data = ( current_->readVoltage() / current_ratio_ - current_offset_ ) / current_scale_;
     //! DEBUG:
     // RCLCPP_INFO(this->get_logger(), "voltage: %f!", voltage_data);
     // RCLCPP_INFO(this->get_logger(), "current: %f!", current_data);
 
 
     // publish
-    // auto message = mvp_msgs::msg::Power();
-
-    // auto message = std_msgs::msg::Float64MultiArray();
     std_msgs::msg::Float64MultiArray message;
-    // message.header.stamp = rclcpp::Clock(RCL_ROS_TIME).now();
-    // message.header.frame_id = frame_id_;
     message.data.resize(2);
     message.data[0] = voltage_data;
-
-    message.data[1] = current_data;
-    // RCLCPP_INFO(this->get_logger(), "done");
-
-    // message.voltage = voltage_data;
-    // message.current = current_data;
-
+    message.data[1] = 0.0;
     publisher_->publish(message);
 }
 
@@ -119,7 +105,6 @@ void PowerMonitor::LoadParam()
 
     // =================== params for ROS =================== //
     // this->declare_parameter("ros.frame_id", DEFAULT_ROS_FRAME_ID);
-
     // this->get_parameter("ros.frame_id", frame_id_);
 }
 

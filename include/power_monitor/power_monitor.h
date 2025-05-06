@@ -36,7 +36,7 @@ private:
 
     std::shared_ptr<MCP3424> voltage_;
 
-    std::shared_ptr<MCP3424> current_;
+    // std::shared_ptr<MCP3424> current_;
 
     MCP3424Config voltage_param_;
 
