@@ -50,8 +50,9 @@ private:
 
     double current_offset_;
 
-    double current_scale_;    
-
+    double current_scale_;   
+    
+    double voltage_warn_;
 };
 
 #endif // POWER_MONITOR_VOLTAGE_DRIVER_

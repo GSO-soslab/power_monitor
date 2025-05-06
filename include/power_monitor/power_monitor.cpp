@@ -19,19 +19,24 @@ PowerMonitor::PowerMonitor() : Node("power_monitor_node")
 
 void PowerMonitor::CallbackTimer() 
 {
+    // Get the voltage 
     auto voltage_data = voltage_->readVoltage() / voltage_ratio_;
     // auto current_data = ( current_->readVoltage() / current_ratio_ - current_offset_ ) / current_scale_;
     //! DEBUG:
     // RCLCPP_INFO(this->get_logger(), "voltage: %f!", voltage_data);
     // RCLCPP_INFO(this->get_logger(), "current: %f!", current_data);
 
-
-    // publish
+    // Publish the voltage
     std_msgs::msg::Float64MultiArray message;
     message.data.resize(2);
     message.data[0] = voltage_data;
     message.data[1] = 0.0;
     publisher_->publish(message);
+
+    // Monitor the voltage
+    if (voltage_data <= voltage_warn_) {
+        RCLCPP_WARN(this->get_logger(), "the voltage:%f is low !", voltage_data);
+    }    
 }
 
 void PowerMonitor::LoadParam() 
@@ -96,12 +101,14 @@ void PowerMonitor::LoadParam()
     this->declare_parameter("system.current_ratio",  DEFAULT_ADC_RATIO);
     this->declare_parameter("system.current_offset", DEFAULT_ADC_OFFSET);
     this->declare_parameter("system.current_scale",  DEFAULT_ADC_SCALE);
+    this->declare_parameter("system.voltage_warn",   DEFAULT_ADC_WARN);
 
     this->get_parameter("system.rate",           rate_);
     this->get_parameter("system.voltage_ratio",  voltage_ratio_);
     this->get_parameter("system.current_ratio",  current_ratio_);
     this->get_parameter("system.current_offset", current_offset_);
     this->get_parameter("system.current_scale",  current_scale_); 
+    this->get_parameter("system.voltage_warn",  voltage_warn_); 
 
     // =================== params for ROS =================== //
     // this->declare_parameter("ros.frame_id", DEFAULT_ROS_FRAME_ID);

@@ -13,6 +13,7 @@
 #define DEFAULT_ADC_RATIO 0.9
 #define DEFAULT_ADC_OFFSET 0.0
 #define DEFAULT_ADC_SCALE 1.0
+#define DEFAULT_ADC_WARN 21.0
 
 // ros
 #define DEFAULT_ROS_TOPIC "power"
