@@ -20,22 +20,28 @@ PowerMonitor::PowerMonitor() : Node("power_monitor_node")
 
 void PowerMonitor::CallbackTimer() 
 {
-    RCLCPP_INFO(this->get_logger(), "Hello %d!", rate_);
+    // RCLCPP_INFO(this->get_logger(), "Hello %d!", rate_);
 
     auto voltage_data = voltage_->readVoltage() / voltage_ratio_;
     auto current_data = ( current_->readVoltage() / current_ratio_ - current_offset_ ) / current_scale_;
     //! DEBUG:
-    RCLCPP_INFO(this->get_logger(), "voltage: %f!", voltage_data);
-    RCLCPP_INFO(this->get_logger(), "current: %f!", current_data);
+    // RCLCPP_INFO(this->get_logger(), "voltage: %f!", voltage_data);
+    // RCLCPP_INFO(this->get_logger(), "current: %f!", current_data);
 
 
     // publish
     // auto message = mvp_msgs::msg::Power();
-    auto message = std_msgs::msg::Float64MultiArray();
+
+    // auto message = std_msgs::msg::Float64MultiArray();
+    std_msgs::msg::Float64MultiArray message;
     // message.header.stamp = rclcpp::Clock(RCL_ROS_TIME).now();
     // message.header.frame_id = frame_id_;
+    message.data.resize(2);
     message.data[0] = voltage_data;
+
     message.data[1] = current_data;
+    // RCLCPP_INFO(this->get_logger(), "done");
+
     // message.voltage = voltage_data;
     // message.current = current_data;
 
