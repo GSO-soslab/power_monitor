@@ -7,7 +7,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 // #include <mvp_msgs/msg/power.hpp>
-#include <std_msgs/msg/float64_multi_array.hpp>
+#include <std_msgs/msg/float32_multi_array.hpp>
 
 #include <power_monitor/MCP3424.h>
 #include <power_monitor/default.h>
@@ -26,7 +26,7 @@ private:
 
     rclcpp::TimerBase::SharedPtr timer_;
 
-    rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr publisher_;
+    rclcpp::Publisher<std_msgs::msg::Float32MultiArray>::SharedPtr publisher_;
 
     //! ROS parameters
 

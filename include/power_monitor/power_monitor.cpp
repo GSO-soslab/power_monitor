@@ -14,7 +14,7 @@ PowerMonitor::PowerMonitor() : Node("power_monitor_node")
         std::chrono::milliseconds(1000/rate_), 
         std::bind(&PowerMonitor::CallbackTimer, this));
 
-    publisher_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("~/power_monitor", 10);    
+    publisher_ = this->create_publisher<std_msgs::msg::Float32MultiArray>("~/power_monitor", 10);    
 }
 
 void PowerMonitor::CallbackTimer() 
@@ -27,7 +27,7 @@ void PowerMonitor::CallbackTimer()
     // RCLCPP_INFO(this->get_logger(), "current: %f!", current_data);
 
     // Publish the voltage
-    std_msgs::msg::Float64MultiArray message;
+    std_msgs::msg::Float32MultiArray message;
     message.data.resize(2);
     message.data[0] = voltage_data;
     message.data[1] = 0.0;
